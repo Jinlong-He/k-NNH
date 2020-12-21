@@ -92,8 +92,10 @@ def read_file(date) :
 
 fo = open('result.txt','w')
 ks = [1, 2, 3, 5, 10, 100]
-start_date = datetime.date(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-end_date = datetime.date(int(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6]))
+#start_date = datetime.date(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+#end_date = datetime.date(int(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6]))
+start_date = datetime.date(2009, 2, 3)
+end_date = datetime.date(2010, 10, 22)
 for i in range((end_date - start_date).days + 1) :
     date = start_date + datetime.timedelta(days=i)
     file_name = str(date) + '.txt'
