@@ -1,6 +1,8 @@
 import time
 import datetime
 import math
+import sys
+import os
 EARTH_REDIUS = 6378.137
 def rad(d):
     return float(d) * 3.14 / 180.0
@@ -74,7 +76,7 @@ class Graph :
 
 def read_file(date) :
     graphs_map = {}
-    f = open('Gowalla_totalCheckins' + date + '.txt','r')
+    f = open(date + '.txt','r')
     i = 0
     for line in f.readlines() :
         if (len(line) < 10) :
@@ -88,9 +90,15 @@ def read_file(date) :
         graphs_map.get(args[0]).append(node)
     return graphs_map
 
+fo = open('result.txt','w')
 ks = [1, 2, 3, 5, 10, 100]
-dates = [15, 16, 17, 18, 19, 20]
-for date in dates :
+start_date = datetime.date(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+end_date = datetime.date(int(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6]))
+for i in range((end_date - start_date).days + 1) :
+    date = start_date + datetime.timedelta(days=i)
+    file_name = str(date) + '.txt'
+    if (not os.path.isfile(file_name)) :
+        continue
     graphs_map = read_file(str(date))
     for k in ks :
         start = datetime.datetime.now()
@@ -100,4 +108,5 @@ for date in dates :
             g.cal_dis()
             acc = g.k_NNH(k)[1] + acc
         end = datetime.datetime.now()
-        print((date, k, acc/len(graphs_map.items()), (start-end).microseconds/1000))
+        print((date, k, acc/len(graphs_map.items()), (end-start).microseconds/1000))
+        fo.write(str((date, k, acc/len(graphs_map.items()), (end-start).microseconds/1000)) + '\n')
